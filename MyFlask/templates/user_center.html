@@ -1,0 +1,38 @@
+{%extends 'layout.html'%}
+
+
+{%block title%}
+<title>个人中心</title>
+{%endblock title%}
+
+
+{%block content%}
+<div class="jumbotron" style="padding: 5px">
+	<!--通过前端校验用户登录状态，没登录过的跳转至登录页面-->
+	<!--{%if "user_name" not in session%}
+		<script type="text/javascript">
+			window.location = "{{url_for('user_login')}}"
+		</script>
+	{%endif%}-->
+	<h4>{{session.get("user_name")}}的个人中心</h4>
+</div>
+<div>
+	{%include "user_menu_template/user_menu.html"%}
+	<div class="col-md-10">
+		<div class="jumbotron">
+			<p>个人中心</p>
+			<h4>未开发</h4>
+		</div>
+	</div>
+</div>
+{%endblock content%}
+
+{%block js_code%}
+<script type="text/javascript">
+	$(document).ready(
+			function () {
+				$("#nav-center").addClass("active")
+			}
+		);
+</script>
+{%endblock js_code%}

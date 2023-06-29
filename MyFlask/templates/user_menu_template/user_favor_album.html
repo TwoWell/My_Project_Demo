@@ -1,0 +1,80 @@
+{%extends 'layout.html'%}
+{%import "album_template/macro_paginate.html" as paginator%}
+
+
+{%block title%}
+<title>我的相册收藏</title>
+{%endblock title%}
+
+
+{%block content%}
+<div class="jumbotron" style="padding: 5px">
+	<h4>{{session.get("user_name")}}收藏的相册</h4>
+</div>
+<div>
+	{%include "user_menu_template/user_menu.html"%}
+	<div class="container col-md-10">
+		<div class="page-header" style="margin-top: 0px;">
+			<a href="{{url_for('user_favor_album',page=1)}}?tag=all" style="display: inline-block;font-size: x-large;margin: 5px 5px;">
+				所有分类
+			</a>
+			{%for item in albumtags%}
+				<a href="{{url_for('user_favor_album',page=1)}}?tag={{item.id}}"
+				style="display: inline-block;font-size: larger;margin: 5px 5px;">
+					{{item.name}}
+				</a>
+			{%endfor%}
+		</div>
+	</div>
+	<div class="container">
+		{%for item in albums.items%}
+			<div class="col-md-3">
+				<div class="media-card">
+					<div class="panel panel-body" style="display: block;padding: 3px;">
+						<div class="card-title">
+							<span style="font-size: large;font-weight: bold;color: #0c0c0c">
+								{{item.title}}
+							</span>
+							<span style="font-size: small;font-weight: 600;color: #0c0c0c">
+								{{item.user.name}}
+							</span>
+						</div>
+						<div class="card-body">
+							<div class="card-image">
+								<a href="" target="_blank">
+									<a href="{{url_for('album_browse',id=item.id)}}">
+										<img src="{{item.coverimgurl}}" width="250px" height="150px">
+									</a>
+								</a>
+							</div>
+							<div class="card-detail">
+								<span style="font-size: small;font-weight: 200;color: #0c0c0c">
+									{{item.desc}}
+								</span>
+							</div>
+							<div class="card-status" style="font-size: small;font-weight: 500;color: #2c4762">
+								<span>图片量 ({{item.photonum}})</span>
+								<span>浏览量 ({{item.clicknum}})</span>
+								<span>收藏量 ({{item.favornum}})</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{%endfor%}
+			<div class="col-md-10 text-center">
+				{{paginator.paginate(albums,'user_favor_album')}}
+			</div>
+	</div>
+</div>
+{%endblock content%}
+
+{%block js_code%}
+<script type="text/javascript">
+	$(document).ready(
+			function () {
+				$("#menu-collection").addClass("list-group-item-success")
+			}
+		);
+</script>
+{%endblock js_code%}

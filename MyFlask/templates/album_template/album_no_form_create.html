@@ -1,0 +1,46 @@
+{%extends 'layout.html'%}
+
+
+{%block title%}
+<title>创建相册/编辑相册信息</title>
+{%endblock title%}
+
+
+{%block content%}
+<h1 class="page-header">创建相册/编辑相册信息</h1>
+<div>
+	<form role="form" method="post" class="col-md-5 col-md-offset-3">
+		<div class="form-group">
+			<label for="album_title">相册标题</label>
+			<input type="text" id="album_title" name="album_title" class="form-control" placeholder="请输入相册标题">
+		</div>
+		<div class="form-group">
+			<label for="album_desc">相册描述</label>
+			<textarea style="resize: none" rows="3" 
+			id="album_desc" name="album_desc" class="form-control" placeholder="请输入相册描述"></textarea>
+		</div>
+		<div class="form-group">
+			<label>相册浏览权限</label>
+			<select name="album_privacy" class="form-control">
+				<option value="private">仅自己</option>
+				<option value="protect-1">粉丝</option>
+				<option value="protect-2">相册收藏者</option>
+				<option value="public" selected="selected">所有人</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label>相册类别</label>
+			<select name="album_tag" class="form-control">
+				<option value="0" selected="selected">请选择相册类别</option>
+				<option value="1">美女</option>
+				<option value="2">风景</option>
+				<option value="3">萌宠</option>
+				<option value="4">动漫</option>
+			</select>
+		</div>
+		<div class="col-md-5 form-group">
+			<input type="submit" class="form-control btn btn-primary" value="确认提交">
+		</div>
+	</form>
+</div>
+{%endblock content%}

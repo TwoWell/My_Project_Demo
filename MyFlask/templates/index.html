@@ -1,0 +1,29 @@
+{%extends 'layout.html'%}
+
+
+{%block title%}
+<title>首页</title>
+{%endblock title%}
+
+
+{%block content%}
+<div class="jumbotron">
+	<h1>首页</h1>
+	{%for message in get_flashed_messages(category_filter=['logout_success'])%}
+		<h3 style="color: green">{{message}}</h3>
+	{%endfor%}
+	{%for message in get_flashed_messages(category_filter=['del_success'])%}
+		<h3 style="color: green">{{message}}</h3>
+	{%endfor%}
+</div>
+{%endblock content%}
+
+{%block js_code%}
+<script type="text/javascript">
+	$(document).ready(
+			function () {
+				$("#nav-index").addClass("active")
+			}
+		);
+</script>
+{%endblock js_code%}

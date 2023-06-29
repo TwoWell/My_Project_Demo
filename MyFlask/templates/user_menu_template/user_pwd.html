@@ -1,0 +1,68 @@
+{%extends 'layout.html'%}
+
+
+{%block title%}
+<title>修改个人密码</title>
+{%endblock title%}
+
+
+{%block content%}
+<div class="jumbotron" style="padding: 5px">
+	<!--通过前端校验用户登录状态，没登录过的跳转至登录页面-->
+	<!--{%if "user_name" not in session%}
+		<script type="text/javascript">
+			window.location = "{{url_for('user_login')}}"
+		</script>
+	{%endif%}-->
+	<h4>{{session.get("user_name")}}的密码</h4>
+</div>
+<div>
+	{%include "user_menu_template/user_menu.html"%}
+	<div class="col-md-10">
+		<div class="jumbotron" style="padding-top: 5px">
+			<h2>修改个人密码</h2><hr style="border: solid" />
+			<form role="form" method="post">
+				<div class="form-group">
+					{%for message in get_flashed_messages(category_filter=['pwd_is_same'])%}
+						<h4 for="error" style="color: red">{{message}}</h4>
+					{%endfor%}
+					{%for message in get_flashed_messages(category_filter=['change_pwd_fail'])%}
+						<h4 for="error" style="color: red">{{message}}</h4>
+					{%endfor%}
+					{{pwd_form.old_pwd.label}}
+					{{pwd_form.old_pwd}}
+					<!-- <label for="old_pwd">用户旧密码</label>
+					<input type="password" id="old_pwd" name="old_pwd" class="form-control"> -->
+					{%for form_error in pwd_form.old_pwd.errors%}
+						<h5 style="color: red">{{form_error}}</h5>
+					{%endfor%}
+				</div>
+				<div class="form-group">
+					{{pwd_form.new_pwd.label}}
+					{{pwd_form.new_pwd}}
+					<!-- <label for="new_pwd">用户新密码</label>
+					<input type="password" id="new_pwd" name="new_pwd" class="form-control"> -->
+					{%for form_error in pwd_form.new_pwd.errors%}
+						<h5 style="color: red">{{form_error}}</h5>
+					{%endfor%}
+				</div>
+				<div class="form-group">
+					{{pwd_form.csrf_token}}
+					{{pwd_form.submit}}
+					<!-- <input type="submit" name="submit" class="btn btn-success" value="修改"> -->
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{%endblock content%}
+
+{%block js_code%}
+<script type="text/javascript">
+	$(document).ready(
+			function () {
+				$("#menu-pwd").addClass("list-group-item-success")
+			}
+		);
+</script>
+{%endblock js_code%}

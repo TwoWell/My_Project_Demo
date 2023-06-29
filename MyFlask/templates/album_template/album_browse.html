@@ -1,0 +1,206 @@
+{%extends 'layout.html'%}
+
+{%block css_style%}
+<link href="{{url_for('static',filename='custom_css/custom.css')}}" rel="stylesheet">
+{%endblock css_style%}
+
+
+{%block title%}
+<title>浏览相册</title>
+{%endblock title%}
+
+
+{%block content%}
+<div class="container">
+	<div class="col-md-8">
+		<h2 class="news-title">{{album.title}}</h2>
+		<div class="news-status">
+			<span>
+				<span class="avatar"><img src="{{userface_url}}"></span>
+				作者:{{album.user.name}}&nbsp;&nbsp;
+			</span>
+			<span>浏览量({{album.clicknum}})&nbsp;&nbsp;</span>
+			<span>收藏量({{album.favornum}})&nbsp;&nbsp;</span>
+			<span>发布时间:{{album.addtime}}&nbsp;&nbsp;</span>
+			{%if session.get('user_id')%}
+				{%if favor_exitCount > 0%}
+				<div id="btn-favor" class="btn btn-default">
+					取消收藏
+				</div>
+				{%else%}
+				<div id="btn-favor" class="btn btn-default">
+					点我收藏
+				</div>
+				{%endif%}
+			{%else%}
+			<div class="btn btn-default" disabled="disabled">
+				登录后可进行收藏
+			</div>
+			{%endif%}
+		</div>
+		<div class="news-content">
+			<blockquote>
+				<p>{{album.desc}}</p>
+			</blockquote>
+			<div class="wow fadeIn" data-wow-delay="0.6s">
+				{%for item in album.photos%}
+					<img src="{{item.url}}"
+					class="img-responsive">
+				{%endfor%}
+			</div>
+		</div>
+		<a href="#" class="text-lg">回到顶部</a>
+	</div>
+	<div class="col-md-4">
+		<div class="side-bar-card">
+			<div class="card-title">相关推荐</div>
+			{%for item in recommend_albums%}
+			<div class="card-body wow fadeIn" data-wow-delay="0.9s">
+				<div class="list">
+					<div class="item clearfix">
+						<div class="col-xs-5 no-padding-h">
+							<a href="{{url_for('album_browse',id=item.id)}}">
+								<img src="{{item.coverimgurl}}">
+							</a>
+						</div>
+						<div class="col-xs-7">
+							<a href="{{url_for('album_browse',id=item.id)}}">
+								<div class="title">{{item.title}}</div>
+								<div class="desc">{{item.desc}}</div>
+								<div class="desc">({{item.clicknum}})阅读&nbsp;({{item.favornum}})收藏</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			{%endfor%}
+		</div>
+		<div class="side-bar-card">
+			<div class="card-title">我的收藏</div>
+			{%if session['user_name']%}
+			<div class="card-body wow fadeIn" data-wow-delay="0.9s">
+					{%for item in favor_albums%}
+					<div class="list">
+						<div class="item clearfix">
+							<div class="col-xs-5 no-padding-h">
+								<a href="{{url_for('album_browse',id=item.id)}}">
+									<img src="{{item.favcoverimgurl}}">
+								</a>
+							</div>
+							<div class="col-xs-7">
+								<a href="{{url_for('album_browse',id=item.id)}}">
+									<div class="title">{{item.title}}</div>
+									<div class="desc">{{item.desc}}</div>
+									<div class="desc">({{item.clicknum}})阅读&nbsp;({{item.favornum}})收藏</div>
+								</a>
+							</div>
+						</div>
+					</div>
+					{%endfor%}
+			</div>
+			{%else%}
+				<div class="list">
+					<div class="item clearfix">
+						<span style="color: #337ab7;font-size: small;">登录后可查看当前用户收藏的相册信息</span>
+					</div>
+				</div>
+			{%endif%}
+		</div>
+		<div class="side-bar-card">
+			<div class="card-title">广告栏</div>
+			<div class="card-body wow fadeIn" data-wow-delay="0.9s">
+				<div class="list">
+					<div class="item clearfix">
+						<div class="col-xs-5 no-padding-h">
+							<a href="{{url_for('user_detail')}}">
+								<img src="{{userface_url}}">
+							</a>
+						</div>
+						<div class="col-xs-7">
+							<a>
+								<div class="name">{{album.user.name}}</div>
+								<div class="email">{{album.user.email}}</div>
+								<div class="phone">{{album.user.phone}}</div>
+								<div class="jianjie">{{album.user.jianjie}}</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{%endblock content%}
+
+
+{%block js_code%}
+<script>
+	$(document).ready(
+		function() {
+			$("#btn-favor").click(
+				function() {
+					var uid = {{session.get('user_id',-1)}};
+					var aid = {{album.id}};
+					var act;
+					if ({{favor_exitCount}}>0) {
+						act = "del";
+						$.ajax({
+								url:"{{url_for('album_favor')}}",
+								type:"GET",
+								data:"aid=" + aid + "&uid=" + uid + "&act=" + act,
+								dataType:"json",
+								success:function (res) {
+									if(res.ok == 2)
+										$("#btn-favor").text("取消成功");
+										$('#btn-favor').attr("disabled","disabled"); 
+								}
+						})
+					} else {
+						act = "add";
+						$.ajax({
+								url:"{{url_for('album_favor')}}",
+								type:"GET",
+								data:"aid=" + aid + "&uid=" + uid + "&act=" + act,
+								dataType:"json",
+								success:function (res) {
+									if(res.ok == 1)
+										$("#btn-favor").text("收藏成功");
+										$('#btn-favor').attr("disabled","disabled"); 
+									if(res.ok == -1)
+										$("#btn-favor").text("不用收藏自己的相册");
+										$('#btn-favor').attr("disabled","disabled");
+								}
+						})
+					}
+				}
+			)
+		}
+	)
+	// $(document).ready(
+	// 	function() {
+	// 		$("#btn-favor").click(
+	// 			function() {
+	// 				var uid = {{session.get('user_id',-1)}};
+	// 				var aid = {{album.id}};
+	// 				if (uid == -1) {
+	// 					alert("请先登录再进行收藏！");
+	// 				} else {
+	// 					$.ajax({
+	// 							url:"{{url_for('album_favor')}}",
+	// 							type:"GET",
+	// 							data:"aid=" + aid + "&uid=" + uid,
+	// 							dataType:"json",
+	// 							success:function (res) {
+	// 								if(res.ok == 1)
+	// 									$("#btn-favor").text("收藏成功！");
+	// 								else
+	// 									$("#btn-favor").text("取消成功");
+	// 							}
+	// 					})
+	// 				}
+	// 			}
+	// 		)
+	// 	}
+	// )
+</script>
+{%endblock js_code%}

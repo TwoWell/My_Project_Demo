@@ -1,0 +1,94 @@
+{%extends 'layout.html'%}
+
+
+{%block title%}
+<title>修改个人资料</title>
+{%endblock title%}
+
+
+{%block content%}
+<div class="jumbotron" style="padding: 5px">
+	<!--通过前端校验用户登录状态，没登录过的跳转至登录页面-->
+	<!--{%if "user_name" not in session%}
+		<script type="text/javascript">
+			window.location = "{{url_for('user_login')}}"
+		</script>
+	{%endif%}-->
+	<h4>{{session.get("user_name")}}的资料</h4>
+</div>
+<div>
+	{%include "user_menu_template/user_menu.html"%}
+	<div class="col-md-10">
+		<div class="jumbotron" style="padding-top: 5px">
+			<h2>修改个人资料</h2><hr style="border: solid" />
+			<form role="form" method="post" enctype="multipart/form-data">
+				<div class="form-group">
+					{{info_form.user_name.label}}
+					{{info_form.user_name(value=user.name)}}
+					{%for form_error in info_form.user_name.errors%}
+						<h5 style="color: red">{{form_error}}</h5>
+					{%endfor%}
+					<!-- <label for="user_name">用户名</label>
+					<input type="text" id="user_name" name="user_name" class="form-control" value="{{user.name}}"> -->
+				</div>
+				<div class="form-group">
+					{{info_form.user_email.label}}
+					{{info_form.user_email(value=user.email)}}
+					{%for form_error in info_form.user_email.errors%}
+						<h5 style="color: red">{{form_error}}</h5>
+					{%endfor%}
+					<!-- <label for="user_email">邮箱</label>
+					<input type="email" id="user_email" name="user_email" class="form-control" value="{{user.email}}"> -->
+				</div>
+				<div class="form-group">
+					{{info_form.user_phone.label}}
+					{{info_form.user_phone(value=user.phone)}}
+					{%for form_error in info_form.user_phone.errors%}
+						<h5 style="color: red">{{form_error}}</h5>
+					{%endfor%}
+				</div>
+				<div class="form-group">
+					{{info_form.user_age.label}}
+					{{info_form.user_age(value=user.age)}}
+					{%for form_error in info_form.user_age.errors%}
+						<h5 style="color: red">{{form_error}}</h5>
+					{%endfor%}
+					<!-- <label for="user_age">年龄</label>
+					<input type="number" id="user_age" name="user_age" class="form-control" value="{{user.age}}"> -->
+				</div>
+				<div class="form-group">
+					{{info_form.user_face.label}}
+					{{info_form.user_face(value=user.face)}}
+					{%for form_error in info_form.user_face.errors%}
+						<h5 style="color: red">{{form_error}}</h5>
+					{%endfor%}
+					<!-- <label for="user_face">头像</label>
+					<input type="file" id="user_face" name="user_face" class="form-control" value="{{user.face}}"> -->
+					{%for message in get_flashed_messages(category_filter=['upload_img_error'])%}
+						<label for="error" style="color: red">{{message}}</label>
+					{%endfor%}
+				</div>
+				<div class="form-group">
+					{{info_form.user_jianjie.label}}
+					{{info_form.user_jianjie}}
+				</div>
+				<div class="form-group">
+					{{info_form.csrf_token}}
+					{{info_form.submit}}
+					<!-- <input type="submit" name="submit" class="btn btn-success" value="修改"> -->
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{%endblock content%}
+
+{%block js_code%}
+<script type="text/javascript">
+	$(document).ready(
+			function () {
+				$("#menu-info").addClass("list-group-item-success")
+			}
+		);
+</script>
+{%endblock js_code%}

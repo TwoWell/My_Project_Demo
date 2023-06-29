@@ -1,0 +1,43 @@
+{%extends 'layout.html'%}
+
+
+{%block title%}
+<title>注销个人账号</title>
+{%endblock title%}
+
+
+{%block content%}
+<div class="jumbotron" style="padding: 5px">
+	<!--通过前端校验用户登录状态，没登录过的跳转至登录页面-->
+	<!--{%if "user_name" not in session%}
+		<script type="text/javascript">
+			window.location = "{{url_for('user_login')}}"
+		</script>
+	{%endif%}-->
+	<h4>{{session.get("user_name")}}的资料</h4>
+</div>
+<div>
+	{%include "user_menu_template/user_menu.html"%}
+	<div class="col-md-10">
+		<div class="jumbotron" style="padding-top: 5px">
+			<h2>注销个人账号</h2><hr style="border: solid" />
+			<form role="form" method="post">
+				<div class="form-group">
+					<p style="font-size:16px;color:red;">请慎重考虑是否进行账号注销（无法撤销）！</p>
+					<input type="submit" name="submit" class="btn btn-success" value="确定">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{%endblock content%}
+
+{%block js_code%}
+<script type="text/javascript">
+	$(document).ready(
+			function () {
+				$("#menu-del").addClass("list-group-item-success")
+			}
+		);
+</script>
+{%endblock js_code%}

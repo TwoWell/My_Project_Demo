@@ -1,0 +1,48 @@
+{%extends 'layout.html'%}
+
+
+{%block title%}
+<title>个人信息</title>
+{%endblock title%}
+
+
+{%block content%}
+<div class="jumbotron" style="padding: 5px">
+	<!--通过前端校验用户登录状态，没登录过的跳转至登录页面-->
+	<!--{%if "user_name" not in session%}
+		<script type="text/javascript">
+			window.location = "{{url_for('user_login')}}"
+		</script>
+	{%endif%}-->
+	<h4>{{user.name}}的个人中心</h4>
+</div>
+<div>
+	{%include "user_menu_template/user_menu.html"%}
+	<div class="col-md-10">
+		<div class="jumbotron" style="padding-top: 5px">
+			<h2>个人信息</h2><hr style="border: solid" />
+			<p><img src="{{face_url}}" width="120px"></p>
+			<!-- <img src="{{url_for('static',filename='upload_files/' + user.name + '/' + user.face)}}" width="120px"> -->
+			<p>用户名：{{user.name}}</p>
+			<p>身份识别码：{{user.uuid}}</p>
+			<p>邮箱：{{user.email}}</p>
+			<p>手机：{{user.phone}}</p>
+			<p>年龄：{{user.age}}</p>
+			<p>简介：{{user.jianjie}}</p>
+			{%for message in get_flashed_messages(category_filter=['change_info_success'])%}
+				<h4 for="error" style="color: green">{{message}}</h4>
+			{%endfor%}
+		</div>
+	</div>
+</div>
+{%endblock content%}
+
+{%block js_code%}
+<script type="text/javascript">
+	$(document).ready(
+			function () {
+				$("#menu-detail").addClass("list-group-item-success")
+			}
+		);
+</script>
+{%endblock js_code%}

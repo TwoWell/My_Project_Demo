@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../favicon.ico">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://v3.bootcss.com/examples/navbar/navbar.css" rel="stylesheet">
+
+    {%block css_style%}
+    {%endblock css_style%}
+
+    {%block title%}
+    {%endblock title%}
+</head>
+<body>
+<div class="container">
+
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{url_for('index')}}">TwoWell</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li id="nav-index"><a href="{{url_for('index')}}">首页</a></li>
+              <li id="nav-album"><a href="{{url_for('album_list',page=1)}}">相册</a></li>
+              <li id="nav-article"><a href="#">文章</a></li>
+              <li id="nav-music"><a href="#">音乐</a></li>
+              <li id="nav-movie"><a href="#">电影</a></li>
+              <li id="nav-about"><a href="#">关于</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              {%if "user_name" in session%}
+                <li id="nav-layout"><a href="{{url_for('logout')}}">退出</a></li>
+                <li id="nav-center"><a href="{{url_for('user_center')}}">个人中心</a></li>
+                <li id="nav-regist"><a href="{{url_for('user_regist')}}">注册</a></li>
+              {%else%}
+                <li id="nav-center"><a href="{{url_for('user_center')}}">个人中心</a></li>
+                <li id="nav-login"><a href="{{url_for('user_login')}}">登录</a></li>
+                <li id="nav-regist"><a href="{{url_for('user_regist')}}">注册</a></li>
+              {%endif%}
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+      {%block content%}
+      {%endblock content%}
+</div>
+
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+{%block js_code%}
+{%endblock js_code%}
+</body>
+</html>
